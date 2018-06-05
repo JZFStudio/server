@@ -1,9 +1,13 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
-var multiparty = require('multiparty');
-var util = require('util');
-var fs = require('fs');
+const multiparty = require('multiparty');
+const util = require('util');
+const fs = require('fs');
+
+const path = require('path');
+
+const originPath = path.join(path.resolve(__dirname, '..'), '/public/files');
 
 router.post('/', function (req, res, next) {
     //生成multiparty对象，并配置上传目标路径
@@ -19,14 +23,26 @@ router.post('/', function (req, res, next) {
             console.log(files);
             var inputFile = files.file[0];
             var uploadedPath = inputFile.path;
-            var dstPath = './public/files/' + inputFile.originalFilename;
-            //重命名为真实文件名
-            fs.rename(uploadedPath, dstPath, function (err) {
-                if (err) {
-                    console.log('rename error: ' + err);
-                } else {
-                    console.log('rename ok');
+            var dstPath = './public/files/';
+
+            fs.readdir(originPath, (err, result) => {
+                let fileName = inputFile.originalFilename;
+                while (result.indexOf(fileName) !== -1) {
+                    let file_index = /^(\d+)-/.test(fileName) ? /^(\d+)-/.exec(fileName)[1] : 0;
+                    if (file_index) {
+                        fileName = fileName.replace(/^\d+-/g, ++file_index + '-');
+                    } else {
+                        fileName = '1-' + fileName;
+                    }
                 }
+                //重命名为真实文件名
+                fs.rename(uploadedPath, dstPath + fileName, function (err) {
+                    if (err) {
+                        console.log('rename error: ' + err);
+                    } else {
+                        console.log('rename ok');
+                    }
+                });
             });
         }
 
