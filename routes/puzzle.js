@@ -9,7 +9,7 @@ const originPath = path.join(path.resolve(__dirname, '..'), '/public/data/');
 /* GET home page. */
 router.put('/', function(req, res) {
     let steps = req.query.steps / 1;
-    let time = req.query.time / 1;
+    let time = req.query.times / 1;
     fs.readFile(originPath + 'puzzle.json', {encoding: 'utf8'}, (err, res1) => {
         if (err) {
             console.log(err);
