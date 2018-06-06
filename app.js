@@ -11,6 +11,8 @@ var projectRouter = require('./routes/project');
 var uploadRouter = require('./routes/upload');
 var filesRouter = require('./routes/files');
 var downloadRouter = require('./routes/download');
+var reverseRouter = require('./routes/reverse');
+var puzzleRouter = require('./routes/puzzle');
 
 var app = express();
 
@@ -37,6 +39,8 @@ app.use('/project', projectRouter);
 app.use('/upload', uploadRouter);
 app.use('/files', filesRouter);
 app.use('/download', downloadRouter);
+app.use('/reverse', reverseRouter);
+app.use('/puzzle', puzzleRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
