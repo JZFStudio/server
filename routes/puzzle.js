@@ -9,7 +9,7 @@ const originPath = path.join(path.resolve(__dirname, '..'), '/public/data/');
 /* GET home page. */
 router.put('/', function(req, res) {
     let steps = req.query.steps / 1;
-    let time = req.query.times / 1;
+    let times = req.query.times / 1;
     fs.readFile(originPath + 'puzzle.json', {encoding: 'utf8'}, (err, res1) => {
         if (err) {
             console.log(err);
@@ -20,7 +20,7 @@ router.put('/', function(req, res) {
         } else {
             let data = JSON.parse(res1);
             let text = '';
-            if ((data.step_list.indexOf(steps) === -1) || (data.time_list.indexOf(time) === -1)) {
+            if ((data.step_list.indexOf(steps) === -1) || (data.time_list.indexOf(times) === -1)) {
                 if (steps < (data.max_step / 1)) {
                     data.max_step = steps;
                     data.step_list.unshift(steps);
@@ -31,12 +31,12 @@ router.put('/', function(req, res) {
                         return (a - b);
                     });
                 }
-                if (time < (data.max_time / 1)) {
-                    data.max_time = time;
-                    data.time_list.unshift(time);
+                if (times < (data.max_time / 1)) {
+                    data.max_time = times;
+                    data.time_list.unshift(times);
                     text += text ? '、刷新时长记录' : '刷新时长记录';
-                } else if (data.time_list.indexOf(time) === -1) {
-                    data.time_list.push(time);
+                } else if (data.time_list.indexOf(times) === -1) {
+                    data.time_list.push(times);
                     data.time_list.sort((a, b) => {
                         return (a - b);
                     });
